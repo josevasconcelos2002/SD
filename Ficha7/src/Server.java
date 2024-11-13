@@ -10,10 +10,15 @@ import static java.util.Arrays.asList;
 
 class ContactManager {
     private HashMap<String, Contact> contacts = new HashMap<>();
+    private ContactList contactsList = new ContactList(this.contacts);
     private ReentrantLock lock = new ReentrantLock();
 
     public HashMap<String, Contact> getContacts(){
         return this.contacts;
+    }
+
+    public ContactList getContactList(){
+        return this.contactsList;
     }
 
 
@@ -32,8 +37,11 @@ class ContactManager {
                 System.out.println(c1);
             } else {
                 this.contacts.put(c.name(), c);
-                Contact c2 = this.contacts.get(c.name());
-                System.out.println(c2);
+                boolean c2 = this.contactsList.add(c);
+                //boolean c3 = this.contactsList.contains(c);
+                //Contact c2 = this.contacts.get(c.name());
+                //System.out.println(c2);
+                System.out.println("\n" + this.getContactList());
             }
         } finally {
             lock.unlock();
@@ -41,8 +49,6 @@ class ContactManager {
 
     }
 
-    // @TODO
-    // public ContactList getContacts() { }
 }
 
 class ServerWorker implements Runnable {
@@ -59,6 +65,10 @@ class ServerWorker implements Runnable {
     public void run() {
         try{
             DataInputStream in = new DataInputStream(this.socket.getInputStream());
+            DataOutputStream out = new DataOutputStream(this.socket.getOutputStream());
+
+            this.manager.getContactList().serialize(out);
+            out.flush();
 
             Contact newContact = Contact.deserialize(in);
 
