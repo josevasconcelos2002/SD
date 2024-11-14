@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.util.*;
 
 class Contact {
-    private String name;
-    private int age;
-    private long phoneNumber;
-    private String company;     // Pode ser null
-    private ArrayList<String> emails;
+    private final String name;
+    private final int age;
+    private final long phoneNumber;
+    private final String company;     // Pode ser null
+    private final ArrayList<String> emails;
 
     public Contact(String name, int age, long phoneNumber, String company, List<String> emails) {
         this.name = name;
@@ -19,25 +19,25 @@ class Contact {
     }
 
     public String name() { return name; }
-    public void setName(String name){
-        this.name = name;
-    }
+//    public void setName(String name){
+//        this.name = name;
+//    }
     public int age() { return age; }
-    public void setAge(int age){
-        this.age = age;
-    }
+//    public void setAge(int age){
+//        this.age = age;
+//    }
     public long phoneNumber() { return phoneNumber; }
-    public void setPhoneNumber(long phoneNumber){
-        this.phoneNumber = phoneNumber;
-    }
+//    public void setPhoneNumber(long phoneNumber){
+//        this.phoneNumber = phoneNumber;
+//    }
     public String company() { return company; }
-    public void setCompany(String company){
-        this.company = company;
-    }
+//    public void setCompany(String company){
+//        this.company = company;
+//    }
     public ArrayList<String> emails() { return new ArrayList(emails); }
-    public void setEmails(ArrayList<String> emails){
-        this.emails = emails;
-    }
+//    public void setEmails(ArrayList<String> emails){
+//        this.emails = emails;
+//    }
 
 
     // implentar estes metodos nas classes que queremos enviar objetos

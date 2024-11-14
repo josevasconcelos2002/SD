@@ -22,12 +22,12 @@ public class Client {
     public static void main(String[] args) throws IOException {
         Socket socket = new Socket("localhost", 12345);
 
+        DataInputStream in = new DataInputStream(socket.getInputStream());
         BufferedReader inBuff = new BufferedReader(new InputStreamReader(System.in));
         DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-        DataInputStream in = new DataInputStream(socket.getInputStream());
-        System.out.println("Hello");
-        ContactList contactList = ContactList.deserialize(in);
-        System.out.println("\n" + contactList + "\n");
+
+        ContactList ct = ContactList.deserialize(in);
+        System.out.println(ct.toString());
 
         String userInput;
         while ((userInput = inBuff.readLine()) != null) {
@@ -36,7 +36,6 @@ public class Client {
             newContact.serialize(out);
             out.flush();
         }
-        socket.shutdownOutput();
         socket.close();
     }
 }
