@@ -5,7 +5,7 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Transfer implements ITransfer{
-    private final int transferLimit = 16000;// 16k bytes
+    public final static int transferLimit = 16000;// 16k bytes
     private String ID;
 
     private Queue<byte[]> fileQueue;

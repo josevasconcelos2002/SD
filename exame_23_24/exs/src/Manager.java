@@ -1,12 +1,11 @@
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Manager implements IManager{
     private final int serverLimit = 16000000; //16M bytes
     private Map<String, Transfer> transfers;
+    private Queue<Transfer> pendingTransfers;
     private int serverLength;
     ReentrantLock transfersLock;
     Condition serverFull;
@@ -14,6 +13,7 @@ public class Manager implements IManager{
 
     public Manager(){
         this.transfers = new HashMap<>();
+        this.pendingTransfers = new ArrayDeque<>();
         this.serverLength = 0;
         this.transfersLock = new ReentrantLock();
         this.serverFull = this.transfersLock.newCondition();
@@ -30,9 +30,12 @@ public class Manager implements IManager{
             Transfer t = new Transfer();
             if(this.serverLength + t.getQueueLength() <= serverLimit){
                 this.transfers.put(t.getID(), t);
+                ID = t.getID();
             } else {
-                while(this.serverLength + t.getQueueLength() > serverLimit)
+                while(this.serverLength + t.getQueueLength() > serverLimit) {
+                    this.pendingTransfers.add(t);
                     this.serverFull.await();
+                }
             }
 
         } catch (InterruptedException e) {
